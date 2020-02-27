@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/qr_code_scan_layout" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/base_code_tip_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="120dp"
+        android:text="@string/qr_code_scan_tip"
+        android:textColor="#ffffff"
+        android:textSize="12dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="40dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/light_switch_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/base_light_switch_selector" />
+
+        <Space
+            android:layout_width="120dp"
+            android:layout_height="0dp" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/photo_selector_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/base_photo_album" />
+
+    </LinearLayout>
+</FrameLayout>
