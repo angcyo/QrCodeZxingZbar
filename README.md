@@ -77,11 +77,11 @@ ScanActivity.start(this, AppScanFragment::class.java)
 ```groovy
 
 allprojects {
-	repositories {
-		maven { url 'https://jitpack.io' }
-	}
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
-	
+    
 dependencies {
     implementation 'com.github.angcyo:QrCodeZxingZbar:1.0.0'
 }
