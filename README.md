@@ -84,7 +84,7 @@ allprojects {
 }
     
 dependencies {
-    implementation 'com.github.angcyo:QrCodeZxingZbar:1.0.0'
+    implementation 'com.github.angcyo:QrCodeZxingZbar:1.0.2'
 }
 ```
 
