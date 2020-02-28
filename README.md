@@ -88,10 +88,18 @@ dependencies {
 }
 ```
 
-
 # 感谢
 
 https://github.com/XieZhiFa/ZxingZbar
+
+# 混淆
+
+库中已经自带了混淆规则, 手动添加如下:
+
+```
+-keep class net.sourceforge.zbar.**{*;}
+-keep class com.google.zxing.client.android.**{*;}
+```
 
 # 下载体验
 
