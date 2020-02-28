@@ -6,7 +6,8 @@
 - 具有`Zbar`所有特性
 - 支持`生成二维码`
 - 支持`从图片扫码`, 三层方法识别.
-
+- api 16+
+- zxing 3.3.3, 3.4需要api 24+
 
 # `zxing` 和 `zbar` 的区别 总结一下:
 
@@ -104,8 +105,6 @@ https://github.com/XieZhiFa/ZxingZbar
 # 联系作者
 
 [点此QQ对话](http://wpa.qq.com/msgrd?v=3&uin=664738095&site=qq&menu=yes)  `该死的空格`    [点此快速加群](https://shang.qq.com/wpa/qunwpa?idkey=cbcf9a42faf2fe730b51004d33ac70863617e6999fce7daf43231f3cf2997460)
-
-[开源地址](https://github.com/angcyo/DslAdapter)
 
 ![](https://gitee.com/angcyo/res/raw/master/code/all_in1.jpg)
 
