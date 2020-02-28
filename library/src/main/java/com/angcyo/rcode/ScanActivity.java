@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -45,7 +46,11 @@ public class ScanActivity extends AppCompatActivity implements IHandleDecode {
     }
 
     public static void start(@NonNull Activity activity, @Nullable Class<? extends ScanFragment> target) {
-        Intent intent = new Intent(activity, ScanActivity.class);
+        start(activity, ScanActivity.class, target);
+    }
+
+    public static void start(@NonNull Activity activity, @NonNull Class<? extends ScanActivity> targetActivity, @Nullable Class<? extends ScanFragment> target) {
+        Intent intent = new Intent(activity, targetActivity);
         intent.putExtra(KEY_TARGET, target);
         activity.startActivityForResult(intent, REQUEST_CODE);
     }
@@ -68,6 +73,10 @@ public class ScanActivity extends AppCompatActivity implements IHandleDecode {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initScanLayout(savedInstanceState);
+    }
+
+    protected void initScanLayout(@Nullable Bundle savedInstanceState) {
         FrameLayout rootLayout = new FrameLayout(this);
         rootLayout.setId(R.id.qr_code_frame_layout);
         rootLayout.setBackgroundColor(Color.BLACK);
@@ -107,7 +116,11 @@ public class ScanActivity extends AppCompatActivity implements IHandleDecode {
             }
         }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.qr_code_frame_layout, new FragmentFactory().instantiate(getClassLoader(), target.getName()));
+        Fragment targetFragment = new FragmentFactory().instantiate(getClassLoader(), target.getName());
+        if (intent != null) {
+            targetFragment.setArguments(intent.getExtras());
+        }
+        fragmentTransaction.add(R.id.qr_code_frame_layout, targetFragment);
         fragmentTransaction.commit();
     }
 
