@@ -39,7 +39,7 @@ public class ScanActivity extends AppCompatActivity implements IHandleDecode {
     /**
      * 请求code
      */
-    public static int REQUEST_CODE = 0x909;
+    public static final int REQUEST_CODE = 0x909;
 
     public static void start(@NonNull Activity activity) {
         start(activity, null);
