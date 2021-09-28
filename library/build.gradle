@@ -28,6 +28,10 @@ dependencies {
 
     //3.4.0 需要 minSdkVersion 24
     // https://github.com/zxing/zxing/issues/1170
+
+    //https://mvnrepository.com/artifact/com.google.zxing/core 3.4.1
     implementation 'com.google.zxing:core:3.3.3'
+
+    //https://mvnrepository.com/artifact/com.google.zxing/android-core 3.3.0
     implementation 'com.google.zxing:android-core:3.3.0'
 }
