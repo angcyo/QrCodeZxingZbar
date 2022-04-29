@@ -1,5 +1,7 @@
 package com.angcyo.rcode;
 
+import static com.angcyo.rcode.encode.QRCodeEncoder.HINTS_DECODE;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,8 +32,6 @@ import net.sourceforge.zbar.SymbolSet;
 
 import java.util.EnumMap;
 import java.util.Map;
-
-import static com.angcyo.rcode.encode.QRCodeEncoder.HINTS_DECODE;
 
 /**
  * https://github.com/angcyo/QrCodeZxingZbar
@@ -71,7 +71,7 @@ public class RCode {
      */
     @Nullable
     public static Bitmap syncEncodeQRCode(String content, int size) {
-        return syncEncodeQRCode(content, size, Color.BLACK, Color.WHITE, null);
+        return syncEncodeCode(content, size, Color.BLACK, Color.WHITE, null);
     }
 
     /**
@@ -83,7 +83,7 @@ public class RCode {
      */
     @Nullable
     public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor) {
-        return syncEncodeQRCode(content, size, foregroundColor, Color.WHITE, null);
+        return syncEncodeCode(content, size, foregroundColor, Color.WHITE, null);
     }
 
     /**
@@ -96,36 +96,44 @@ public class RCode {
      */
     @Nullable
     public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor, Bitmap logo) {
-        return syncEncodeQRCode(content, size, foregroundColor, Color.WHITE, logo);
+        return syncEncodeCode(content, size, foregroundColor, Color.WHITE, logo);
+    }
+
+    @Nullable
+    public static Bitmap syncEncodeCode(String content, int size, int foregroundColor, int backgroundColor, Bitmap logo) {
+        return syncEncodeCode(content, size, size, foregroundColor, backgroundColor, logo, BarcodeFormat.QR_CODE);
     }
 
     /**
      * 同步创建指定前景色、指定背景色、带logo的二维码图片。该方法是耗时操作，请在子线程中调用。
      *
      * @param content         要生成的二维码图片内容
-     * @param size            图片宽高，单位为px
+     * @param width           图片宽，单位为px
+     * @param height          图片高，单位为px
      * @param foregroundColor 二维码图片的前景色
      * @param backgroundColor 二维码图片的背景色
      * @param logo            二维码图片的logo
+     * @param format          码的格式
      */
     @Nullable
-    public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor, int backgroundColor, Bitmap logo) {
+    public static Bitmap syncEncodeCode(String content, int width, int height, int foregroundColor, int backgroundColor, Bitmap logo, BarcodeFormat format) {
         try {
-            BitMatrix matrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, size, size, HINTS);
-            int[] pixels = new int[size * size];
-            for (int y = 0; y < size; y++) {
-                for (int x = 0; x < size; x++) {
+            BitMatrix matrix = new MultiFormatWriter().encode(content, format, width, height, HINTS);
+            int[] pixels = new int[width * height];
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
                     if (matrix.get(x, y)) {
-                        pixels[y * size + x] = foregroundColor;
+                        pixels[y * width + x] = foregroundColor;
                     } else {
-                        pixels[y * size + x] = backgroundColor;
+                        pixels[y * width + x] = backgroundColor;
                     }
                 }
             }
-            Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-            bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
             return addLogoToQRCode(bitmap, logo);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -152,8 +160,8 @@ public class RCode {
         try {
             Canvas canvas = new Canvas(bitmap);
             canvas.drawBitmap(src, 0, 0, null);
-            canvas.scale(scaleFactor, scaleFactor, srcWidth / 2, srcHeight / 2);
-            canvas.drawBitmap(logo, (srcWidth - logoWidth) / 2, (srcHeight - logoHeight) / 2, null);
+            canvas.scale(scaleFactor, scaleFactor, srcWidth / 2f, srcHeight / 2f);
+            canvas.drawBitmap(logo, (srcWidth - logoWidth) / 2f, (srcHeight - logoHeight) / 2f, null);
             canvas.save();
             //canvas.saveLayer(0f, 0f, measuredWidth.toFloat(), measuredHeight.toFloat(), null, Canvas.ALL_SAVE_FLAG)
             canvas.restore();
