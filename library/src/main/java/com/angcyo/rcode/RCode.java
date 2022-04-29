@@ -71,7 +71,7 @@ public class RCode {
      */
     @Nullable
     public static Bitmap syncEncodeQRCode(String content, int size) {
-        return syncEncodeCode(content, size, Color.BLACK, Color.WHITE, null);
+        return syncEncodeQRCode(content, size, Color.BLACK, Color.WHITE, null);
     }
 
     /**
@@ -83,7 +83,7 @@ public class RCode {
      */
     @Nullable
     public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor) {
-        return syncEncodeCode(content, size, foregroundColor, Color.WHITE, null);
+        return syncEncodeQRCode(content, size, foregroundColor, Color.WHITE, null);
     }
 
     /**
@@ -96,11 +96,11 @@ public class RCode {
      */
     @Nullable
     public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor, Bitmap logo) {
-        return syncEncodeCode(content, size, foregroundColor, Color.WHITE, logo);
+        return syncEncodeQRCode(content, size, foregroundColor, Color.WHITE, logo);
     }
 
     @Nullable
-    public static Bitmap syncEncodeCode(String content, int size, int foregroundColor, int backgroundColor, Bitmap logo) {
+    public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor, int backgroundColor, Bitmap logo) {
         return syncEncodeCode(content, size, size, foregroundColor, backgroundColor, logo, BarcodeFormat.QR_CODE);
     }
 
@@ -145,7 +145,7 @@ public class RCode {
      * @param logo
      * @return
      */
-    private static Bitmap addLogoToQRCode(Bitmap src, Bitmap logo) {
+    public static Bitmap addLogoToQRCode(Bitmap src, Bitmap logo) {
         if (src == null || logo == null) {
             return src;
         }
