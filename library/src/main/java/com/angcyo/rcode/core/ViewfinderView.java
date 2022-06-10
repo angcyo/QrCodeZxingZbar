@@ -22,6 +22,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -57,6 +58,11 @@ public class ViewfinderView extends View implements IViewfinderView {
     private List<ResultPoint> possibleResultPoints;
     private List<ResultPoint> lastPossibleResultPoints;
 
+    /**
+     * [com.angcyo.rcode.camera.CameraManager#screenResolutionRef]
+     */
+    public boolean hookScreenResolutionRef = false;
+
     // This constructor is used when the class is built from an XML resource.
     public ViewfinderView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -73,13 +79,21 @@ public class ViewfinderView extends View implements IViewfinderView {
         lastPossibleResultPoints = null;
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (hookScreenResolutionRef) {
+            CameraManager.screenResolutionRef = new Point(w, h);
+        }
+    }
+
     @SuppressLint("DrawAllocation")
     @Override
     public void onDraw(Canvas canvas) {
         if (cameraManager == null) {
             return; // not ready yet, early draw before done configuring
         }
-        Rect frame = cameraManager.getFramingRect();
+        Rect frame = getFramingRect();
         Rect previewFrame = cameraManager.getFramingRectInPreview();
         if (frame == null || previewFrame == null) {
             return;
@@ -210,6 +224,20 @@ public class ViewfinderView extends View implements IViewfinderView {
                 points.subList(0, size - MAX_RESULT_POINTS / 2).clear();
             }
         }
+    }
+
+    /**
+     * 强制 指定预览框
+     * [com.angcyo.rcode.camera.CameraManager#framingRect]
+     */
+    public Rect frameRect;
+
+    public Rect getFramingRect() {
+        if (frameRect != null) {
+            cameraManager.framingRect = frameRect;
+            return frameRect;
+        }
+        return cameraManager.getFramingRect();
     }
 
 }

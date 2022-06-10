@@ -25,9 +25,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
-import com.angcyo.rcode.core.PreferencesActivity;
+
 import com.angcyo.rcode.camera.open.CameraFacing;
 import com.angcyo.rcode.camera.open.OpenCamera;
+import com.angcyo.rcode.core.PreferencesActivity;
 import com.google.zxing.client.android.camera.CameraConfigurationUtils;
 
 
@@ -108,8 +109,7 @@ final class CameraConfigurationManager {
     }
      */
 
-        cwRotationFromDisplayToCamera =
-                (360 + cwRotationFromNaturalToCamera - cwRotationFromNaturalToDisplay) % 360;
+        cwRotationFromDisplayToCamera = (360 + cwRotationFromNaturalToCamera - cwRotationFromNaturalToDisplay) % 360;
         Log.i(TAG, "Final display orientation: " + cwRotationFromDisplayToCamera);
         if (camera.getFacing() == CameraFacing.FRONT) {
             Log.i(TAG, "Compensating rotation for front camera");
@@ -119,9 +119,14 @@ final class CameraConfigurationManager {
         }
         Log.i(TAG, "Clockwise rotation from display to camera: " + cwNeededRotation);
 
-        Point theScreenResolution = new Point();
-        display.getSize(theScreenResolution);
-        screenResolution = theScreenResolution;
+        if (CameraManager.screenResolutionRef == null) {
+            Point theScreenResolution = new Point();
+            display.getSize(theScreenResolution);
+            screenResolution = theScreenResolution;
+        } else {
+            screenResolution = CameraManager.screenResolutionRef;
+        }
+
         Log.i(TAG, "Screen resolution in current orientation: " + screenResolution);
         cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
         Log.i(TAG, "Camera resolution: " + cameraResolution);

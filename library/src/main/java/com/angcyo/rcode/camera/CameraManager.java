@@ -42,10 +42,13 @@ public final class CameraManager {
 
     private static final String TAG = CameraManager.class.getSimpleName();
 
-    private static final int MIN_FRAME_WIDTH = 240;
-    private static final int MIN_FRAME_HEIGHT = 240;
-    private static final int MAX_FRAME_WIDTH = 1200; // = 5/8 * 1920
-    private static final int MAX_FRAME_HEIGHT = 675; // = 5/8 * 1080
+    public static int MIN_FRAME_WIDTH = 240;
+    public static int MIN_FRAME_HEIGHT = 240;
+    public static int MAX_FRAME_WIDTH = 1200; // = 5/8 * 1920
+    public static int MAX_FRAME_HEIGHT = 675; // = 5/8 * 1080
+
+    /**屏幕尺寸参考*/
+    public static Point screenResolutionRef;
 
     private final Context context;
     private final CameraConfigurationManager configManager;
@@ -56,7 +59,7 @@ public final class CameraManager {
     private final PreviewCallback previewCallback;
     private OpenCamera camera;
     private AutoFocusManager autoFocusManager;
-    private Rect framingRect;
+    public Rect framingRect;
     private Rect framingRectInPreview;
     private boolean initialized;
     private boolean previewing;
@@ -235,7 +238,6 @@ public final class CameraManager {
             int width = findDesiredDimensionInRange(screenResolution.x, MIN_FRAME_WIDTH, MAX_FRAME_WIDTH);
             int height = findDesiredDimensionInRange(screenResolution.y, MIN_FRAME_HEIGHT, MAX_FRAME_HEIGHT);
 
-
             // add
             width = width + 50;
             height = width;
@@ -268,11 +270,11 @@ public final class CameraManager {
                 // Called early, before init even finished
                 return null;
             }
+
 //      rect.left = rect.left * cameraResolution.x / screenResolution.x;
 //      rect.right = rect.right * cameraResolution.x / screenResolution.x;
 //      rect.top = rect.top * cameraResolution.y / screenResolution.y;
 //      rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
-
 
             rect.left = rect.left * cameraResolution.y / screenResolution.x;
             rect.right = rect.right * cameraResolution.y / screenResolution.x;
