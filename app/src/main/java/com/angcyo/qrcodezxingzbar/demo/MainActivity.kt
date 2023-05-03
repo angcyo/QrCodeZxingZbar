@@ -6,12 +6,15 @@ import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.angcyo.rcode.RCode
 import com.angcyo.rcode.ScanActivity
 import com.google.zxing.BarcodeFormat
-import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * Email:angcyo@126.com
@@ -32,15 +35,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        scan_button.setOnClickListener {
+        findViewById<View>(R.id.scan_button).setOnClickListener {
             //扫一扫
             ScanActivity.start(this, AppScanFragment::class.java)
         }
-        create_qrcode.setOnClickListener {
+        findViewById<View>(R.id.create_qrcode).setOnClickListener {
             //创建二维码
             createCode(BarcodeFormat.QR_CODE)
         }
-        create_barcode.setOnClickListener {
+        findViewById<View>(R.id.create_barcode).setOnClickListener {
             //创建条形码
             createCode(BarcodeFormat.CODE_128)
         }
@@ -57,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         Log.i("angcyo", "onActivityResult:" + data)
 
         val result = ScanActivity.onResult(requestCode, resultCode, data)
-        text_view.text = result ?: "已取消"
+        findViewById<TextView>(R.id.text_view).text = result ?: "已取消"
     }
 
     fun createCode(format: BarcodeFormat) {
@@ -68,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             val height =
                 if (format == BarcodeFormat.QR_CODE || format == BarcodeFormat.DATA_MATRIX) width else 300
             bitmap = RCode.syncEncodeCode(
-                edit_text.text?.toString(),
+                findViewById<TextView>(R.id.edit_text).text?.toString(),
                 width,
                 height,
                 Color.BLACK,
@@ -77,8 +80,9 @@ class MainActivity : AppCompatActivity() {
                 format
             )
             runOnUiThread {
-                image_view.setImageBitmap(bitmap)
-                text_view.text = "创建Code耗时:${System.currentTimeMillis() - time}ms"
+                findViewById<ImageView>(R.id.image_view).setImageBitmap(bitmap)
+                findViewById<TextView>(R.id.text_view).text =
+                    "创建Code耗时:${System.currentTimeMillis() - time}ms"
             }
         }
     }
@@ -105,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         codeList.forEach { format ->
-            layout.addView(Button(this).apply {
+            findViewById<ViewGroup>(R.id.layout).addView(Button(this).apply {
                 text = format.toString()
                 setOnClickListener {
                     createCode(format)
