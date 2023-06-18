@@ -1,3 +1,11 @@
+# 推荐使用
+
+[CameraX-MLKit](https://github.com/android/camera-samples/tree/main/CameraX-MLKit) 
+
+谷歌官方库, 使用`CameraX`和`ML Kit`工具包实现的, 支持`二维码/条形码`的`单扫/多扫`功能, 速度也是非常快.
+
+[ML Kit](https://developers.google.com/ml-kit/vision/barcode-scanning?hl=zh-cn)
+
 # QrCodeZxingZbar
 
 使用`Zxing` `Zbar` 结合 扫描, 默认`1s`切换一次`Zxing`或`Zbar`.
